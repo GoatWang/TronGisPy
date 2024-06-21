@@ -28,7 +28,25 @@ def clip_shp_by_shp(src_shp_path, clipper_shp_path, dst_shp_path):
         df_dst_shp = gpd.sjoin(df_src, df_clipper, how='inner')
     elif geom_type in ['Polygon', 'MultiPolygon']:
         df_dst_shp = gpd.overlay(df_src, df_clipper, how='intersection')
-    elif geom_type in ['LineString', 'MultiLineString']:
+    elif geom_type in ['LineString']:
+        # the code may work (modify the following code for the MultiLineString)
+        multi_lines = []
+        for line in df_src['geometry']:
+            lines = []
+            for poly in df_clipper['geometry']:
+                line_intersection = line.intersection(poly)
+                if not line_intersection.is_empty:
+                    if line_intersection.geom_type == 'MultiLineString':
+                        lines.extend(line.intersection(poly))
+                    elif line_intersection.geom_type == 'LineString':
+                        lines.append(line.intersection(poly))
+            multi_lines.append(MultiLineString(lines))
+        df_dst_shp = df_src.copy()
+        df_dst_shp['geometry'] = multi_lines
+        df_dst_shp.dropna(inplace=True)        
+    elif geom_type in ['MultiLineString']:
+        assert False, "LineString is currently not supported in clip_shp_by_shp function"
+        # modify the LineString code
         # TODO
         ## ogr solution: https://pcjericks.github.io/py-gdalogr-cookbook/vector_layers.html#get-geometry-from-each-feature-in-a-layer
         ## geopandas solution: MultiLineString intersection will in trounble
@@ -53,20 +71,8 @@ def clip_shp_by_shp(src_shp_path, clipper_shp_path, dst_shp_path):
         # df_multiline.intersection(df_clipper) 
         ## some part of WultiLine willdisappear
         # assert False, "We temporarily does not support for line strings clipping"
-        multi_lines = []
-        for line in df_src['geometry']:
-            lines = []
-            for poly in df_clipper['geometry']:
-                line_intersection = line.intersection(poly)
-                if not line_intersection.is_empty:
-                    if line_intersection.geom_type == 'MultiLineString':
-                        lines.extend(line.intersection(poly))
-                    elif line_intersection.geom_type == 'LineString':
-                        lines.append(line.intersection(poly))
-            multi_lines.append(MultiLineString(lines))
-        df_dst_shp = df_src.copy()
-        df_dst_shp['geometry'] = multi_lines
-        df_dst_shp.dropna(inplace=True)
+
+
     else:
         assert False, "geom_type must be Point, MultiPoint, Polygon, MultiPolygon, LineString or MultiLineString!"
     

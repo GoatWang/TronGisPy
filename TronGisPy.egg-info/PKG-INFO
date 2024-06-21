@@ -1,15 +1,20 @@
 Metadata-Version: 2.1
 Name: TronGisPy
-Version: 1.4.8
+Version: 1.5.0
 Summary: Gis raster data processing tool
 Home-page: https://github.com/thinktron/TronGisPy
 Author: Thinktron
-Author-email: jeremywang@thinktronltd.com, moon.starsky37@gmail.com
+Author-email: jeremy4555@yahoo.com.tw, moon.starsky37@gmail.com
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Description-Content-Type: text/markdown
 License-File: LICENSE.txt
+Requires-Dist: numba
+Requires-Dist: affine
+Requires-Dist: scikit-learn
+Requires-Dist: descartes
+Requires-Dist: matplotlib
 
 ![TronGisPy](https://raw.githubusercontent.com/thinktron/TronGisPy/master/static/trongispy.02-01.png)
 

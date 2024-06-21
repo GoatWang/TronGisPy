@@ -7,9 +7,9 @@ with open(os.path.join(base_dir, "README.md"), "r") as f:
 
 setuptools.setup(
     name="TronGisPy",
-    version="1.4.8",
+    version="1.5.0",
     author="Thinktron",
-    author_email="jeremywang@thinktronltd.com, moon.starsky37@gmail.com",
+    author_email="jeremy4555@yahoo.com.tw, moon.starsky37@gmail.com",
     description="Gis raster data processing tool",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -146,8 +146,10 @@ setuptools.setup(
 # 1.4.7 fix zonal stats with multi-bands' raster
 # 1.4.8 Add getitem function in Raster to enable quick clipping of Raster using numpy index.
 
+# 1.5.0 1. add nan_no_data parameter in ploting function in Raster. 2. disable MultiLineString type for using clip_shp_by_shp in ShapeGrid
+
 # python setup.py sdist bdist_wheel
-# twine upload dist/TronGisPy-1.4.8*
+# twine upload dist/TronGisPy-1.5.0*
 
 
 

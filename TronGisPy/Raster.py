@@ -507,13 +507,15 @@ class Raster():
         else:
             self.__cache_data_for_plot = None
 
-    def plot(self, flush_cache=True, norm=True, clip_percentage=(0.02, 0.98), clip_min_max=None, log=False, rescale_percentage=None, bands=None, ax=None, title=None, cmap=None, figsize=None):
+    def plot(self, flush_cache=True, nan_no_data=True, norm=True, clip_percentage=(0.02, 0.98), clip_min_max=None, log=False, rescale_percentage=None, bands=None, ax=None, title=None, cmap=None, figsize=None):
         """Plot the raster object.
 
         Parameters
         ----------
         flush_cache: bool. 
             Flush the cached processed result for quick plotting.
+        nan_no_data: bool.
+            convert the no data value to nan before ploting
         norm: bool, optional, default: True
             Normalize the image for showing.
         clip_percentage: tuple of float, optional, default: (0.02, 0.98)
@@ -550,7 +552,8 @@ class Raster():
 
             # deal with no data
             data = data.astype(float)
-            data[data == self.no_data_value] = np.nan
+            if nan_no_data:
+                data[data == self.no_data_value] = np.nan
 
             # detect single value
             if len(np.unique(data[~np.isnan(data)])) == 1:
